@@ -9,24 +9,20 @@
  * command line option. When adding functions do it at the end of the 
  * array, so not to break the already defined command line arguments */
 int (*fun[])(int) = {
-    isprint, /* Index:0  printable char */
-    isalnum, /* Index:1  alphanum char  */
-    isalpha, /* Index:2  letter         */
-    isascii, /* Index:3  ascii char     */
-    isblank, /* Index:4  tab or space   */
-    iscntrl, /* Index:5  control char   */
-    isdigit, /* Index:6  digit          */
-    isgraph, /* Index:7  graphical char */
-    islower, /* Index:8  lowercase alph */
-    isupper, /* Index:9  uppercase aplh */
-    ispunct, /* Index:10 punct char     */
-    isspace, /* Index:11 any space      */
-    isxdigit,/* Index:12 hex digit      */
+    my_isprint, /* Index:0  printable char */
+    isalnum,    /* Index:1  alphanum char  */
+    isalpha,    /* Index:2  letter         */
+    isascii,    /* Index:3  ascii char     */
+    isblank,    /* Index:4  tab or space   */
+    iscntrl,    /* Index:5  control char   */
+    isdigit,    /* Index:6  digit          */
+    isgraph,    /* Index:7  graphical char */
+    islower,    /* Index:8  lowercase alph */
+    isupper,    /* Index:9  uppercase aplh */
+    ispunct,    /* Index:10 punct char     */
+    isspace,    /* Index:11 any space      */
+    isxdigit,   /* Index:12 hex digit      */
 };
-
-int print_help() {
-    return printf("Help");
-}          
 
 /* Insert the function point fun in the function pointers vector 
  * function_vector and make the last slot point to NULL */
@@ -167,3 +163,31 @@ int execute_loop(int character, int (*function_vector[])(int)) {
     } 
     return result;
 }
+
+int my_isprint(int c) {
+    return isprint(c) || isspace(c);
+}
+
+/* print  help */
+int print_help() {
+    printf(
+"printable -- version 0.1\n"
+"printable reads from stdin and filters out no ascii (or a subset of) characters\n"
+"\n"
+"    -p, --printable             printable characters\n"
+"    -A, --ascii                 characters from the ascii set\n"
+"    -a, --alphanum              letters and digits (equivalent to -Ld)\n"
+"    -L, --letter                letters\n"
+"    -b, --blank                 blank (spaces or tabs)\n"
+"    -c, --control               control character\n"
+"    -d, --digit                 digits\n"
+"    -g, --graph                 graphically visible characters (no blank or new lines)\n"
+"    -l, --lower                 lower case letters\n"
+"    -U, --upper                 upper case letters\n"
+"    -s, --space                 spaces, tabs, form feeds and newlines\n"
+"    -x, --hex                   hexadecial digits\n"
+"\n"
+"    -h, --help                  display this help and exit\n");
+    return 0;
+}
+
