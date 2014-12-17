@@ -1,5 +1,6 @@
 #include "printable.h"
-#include <unistd.h>
+#include <stdlib.h>
+#include <getopt.h>
 #include <stdio.h>
 #include <ctype.h>
 #define VECT_LEN 20
@@ -57,12 +58,13 @@ int main(int argc, char ** argv) {
             {"punct",       no_argument,    NULL, 'P'},
             {"space",       no_argument,    NULL, 's'},
             {"hex",         no_argument,    NULL, 'x'},
+            {"help",        no_argument,    NULL, 'h'},
             {0, 0, 0, 0}
         };
         /* getopt_long stores the option index here. */
         int option_index = 0;
 
-        c = getopt_long (argc, argv, "paALbcdglUPsx",
+        c = getopt_long (argc, argv, "paALbcdglUPsxh",
                        long_options, &option_index);
 
         /* Detect the end of the options. */
@@ -125,14 +127,16 @@ int main(int argc, char ** argv) {
 
             case 'h':
             print_help();       
+            exit(0);
             break;
 
             case '?':
               /* getopt_long already printed an error message. */
+            abort();
             break;
 
             default:
-            fprintf(stderr, "error: Option %c not handled correctly");
+            fprintf(stderr, "error: Option %c not handled correctly\n", c);
         }
     }
 
@@ -148,10 +152,11 @@ int main(int argc, char ** argv) {
     return 0;
 }
 
-int execute_loop(int character, int * function_vector[](*int)) {
+int execute_loop(int character, int (*function_vector[])(int)) {
     int result = 0;
     for(int i = 0; function_vector[i] != NULL; i++) {
         result = function_vector[i](character);
         if (result != 0) break;
     } 
+    return result;
 }
