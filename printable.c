@@ -39,7 +39,7 @@ void populate_vector(int (*fun)(int), int (*function_vector[])(int)) {
 
 int main(int argc, char ** argv) {
     /* this array gets populated with the selected functions */
-    int (*function_vector[VECT_LEN])(int);
+    int (*function_vector[VECT_LEN])(int) = {NULL};
     int c;
 
     while (1)
@@ -140,6 +140,11 @@ int main(int argc, char ** argv) {
         }
     }
 
+
+    if ( function_vector[0] == NULL ) {
+            populate_vector(fun[0], function_vector);
+    }
+
     /* read characters on at a time. possibly it could be made more efficient
      * by buffering */
     int ch;
@@ -152,6 +157,8 @@ int main(int argc, char ** argv) {
     return 0;
 }
 
+/* Given a character it will pass it through the functions in the vector
+ * and return the first non 0 value, or 0 if there isn't one */
 int execute_loop(int character, int (*function_vector[])(int)) {
     int result = 0;
     for(int i = 0; function_vector[i] != NULL; i++) {
